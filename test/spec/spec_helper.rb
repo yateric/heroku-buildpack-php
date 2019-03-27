@@ -71,3 +71,37 @@ def new_app_with_stack_and_platrepo(*args, **kwargs)
 	kwargs[:config].compact!
 	Hatchet::Runner.new(*args, **kwargs)
 end
+
+module Hatchet
+  class Reaper
+    def cycle
+      get_apps
+      if over_limit?
+        if @hatchet_apps.count > 1
+          destroy_oldest
+          cycle
+        else
+          puts "Warning: Reached Heroku app limit of #{HEROKU_APP_LIMIT}."
+        end
+      else
+        # do nothing
+      end
+
+    # If the app is already deleted an exception
+    # will be raised, if the app cannot be found
+    # assume it is already deleted and try again
+    rescue Excon::Error::NotFound => e
+      body = e.response.body
+      if body =~ /Couldn\'t find that app./
+        puts "#{@message}, but looks like it was already deleted"
+        retry
+      end
+      raise e
+    rescue Excon::Error::Forbidden => e
+      puts "Got a 403, request and response dump follows"
+      p e.request
+      p e.response
+      raise e
+    end
+  end
+end
