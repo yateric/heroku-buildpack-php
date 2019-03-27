@@ -73,7 +73,45 @@ def new_app_with_stack_and_platrepo(*args, **kwargs)
 end
 
 module Hatchet
+  class App
+    private def default_name
+      "#{ENV['HATCHET_APP_PREFIX']}#{SecureRandom.hex(10)}"
+    end
+  end
+  
+  class TestRun
+    def initialize(
+      token:,
+      buildpacks:,
+      app:,
+      pipeline:,
+      api_rate_limit:,
+      timeout:        10,
+      pause:          5,
+      commit_sha:     "sha",
+      commit_branch:  "master",
+      commit_message: "commit",
+      organization:    nil
+    )
+      @pipeline        = pipeline || "#{ENV['HATCHET_APP_PREFIX']}#{SecureRandom.hex(10)}"
+      @timeout         = timeout
+      @pause           = pause
+      @organization    = organization
+      @token           = token
+      @commit_sha      = commit_sha
+      @commit_branch   = commit_branch
+      @commit_message  = commit_message
+      @buildpacks      = Array(buildpacks)
+      @app             = app
+      @mutex           = Mutex.new
+      @status          = false
+      @api_rate_limit  = api_rate_limit
+    end
+    attr_reader :app
+  end
+  
   class Reaper
+    DEFAULT_REGEX = /^#{ENV['HATCHET_APP_PREFIX']}/
     def cycle
       get_apps
       if over_limit?

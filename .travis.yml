@@ -7,7 +7,9 @@ install:
 - bundle install
 before_script:
 - bundle exec hatchet ci:setup
-script: bundle exec parallel_rspec -n6 test/spec/
+script: HATCHET_APP_PREFIX=hatchet-t-${TRAVIS_JOB_ID}- bundle exec parallel_rspec -n6 test/spec/
+after_script:
+- bundle exec hatchet destroy --all
 env:
   global:
   - HATCHET_RETRIES=3
