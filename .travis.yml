@@ -14,8 +14,8 @@ env:
   global:
   - HATCHET_RETRIES=3
   - IS_RUNNING_ON_CI=true
-  - HATCHET_APP_LIMIT=5
-  - HEROKU_APP_LIMIT=100
+  - HATCHET_APP_LIMIT=25
+  - HEROKU_APP_LIMIT=1000
   - HATCHET_DEPLOY_STRATEGY=git
   - HATCHET_BUILDPACK_BASE="https://github.com/heroku/heroku-buildpack-php"
 matrix:
