@@ -77,6 +77,22 @@ module Hatchet
     private def default_name
       "#{ENV['HATCHET_APP_PREFIX']}#{SecureRandom.hex(10)}"
     end
+    def create_app
+      3.times.retry do
+        begin
+          # heroku.post_app({ name: name, stack: stack }.delete_if {|k,v| v.nil? })
+          hash = { name: name, stack: stack }
+          hash.delete_if { |k,v| v.nil? }
+          api_rate_limit.call.app.create(hash)
+        rescue Excon::Error::HTTPStatus => e
+          puts "Excon error from API in create_app, now reaping, then dumping request/response"
+          @reaper.cycle
+          p e.request
+          p e.response
+          raise e
+        end
+      end
+    end
   end
   
   class TestRun
