@@ -75,7 +75,7 @@ end
 module Hatchet
   class App
     private def default_name
-      "#{ENV['HATCHET_APP_PREFIX']}#{SecureRandom.hex(10)}"
+      "#{ENV['HATCHET_APP_PREFIX']}#{SecureRandom.hex(5)}"
     end
     def create_app
       3.times.retry do
@@ -109,7 +109,7 @@ module Hatchet
       commit_message: "commit",
       organization:    nil
     )
-      @pipeline        = pipeline || "#{ENV['HATCHET_APP_PREFIX']}#{SecureRandom.hex(10)}"
+      @pipeline        = pipeline || "#{ENV['HATCHET_APP_PREFIX']}#{SecureRandom.hex(5)}"
       @timeout         = timeout
       @pause           = pause
       @organization    = organization
