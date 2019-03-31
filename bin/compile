@@ -338,8 +338,9 @@ composer validate --no-plugins --no-check-publish --no-check-all --quiet "$COMPO
 	EOF
 }
 
-status "Install custom extensions"
+status "Installing custom extensions"
 
+source $bp_dir/bin/pecl.sh
 source $bp_dir/bin/grpc.sh
 source $bp_dir/bin/protobuf.sh
 

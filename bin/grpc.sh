@@ -1,5 +1,5 @@
-echo "Install grpc extension"
+echo "Installing grpc extension"
 pecl install grpc
 
-echo "Import grpc extension to php.ini"
+echo "Importing grpc extension to php.ini"
 echo "extension=grpc.so" >> /app/.heroku/php/etc/php/php.ini
