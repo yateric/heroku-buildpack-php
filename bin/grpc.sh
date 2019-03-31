@@ -1,5 +1,13 @@
 echo "Installing grpc extension"
-pecl install grpc
+git clone -b $(curl -L https://grpc.io/release) https://github.com/grpc/grpc
 
-echo "Importing grpc extension to php.ini"
-echo "extension=grpc.so" >> /app/.heroku/php/etc/php/php.ini
+cd grpc
+git pull --recurse-submodules && git submodule update --init --recursive
+make
+sudo make install
+
+cd src/php/ext/grpc
+phpize
+./configure
+make
+sudo make install

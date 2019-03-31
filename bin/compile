@@ -233,7 +233,7 @@ rm $build_dir/.heroku/php-min.tar.gz
 
 status "Installing custom extensions"
 
-source $bp_dir/bin/pecl.sh
+# source $bp_dir/bin/pecl.sh
 source $bp_dir/bin/grpc.sh
 source $bp_dir/bin/protobuf.sh
 
