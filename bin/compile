@@ -338,6 +338,11 @@ composer validate --no-plugins --no-check-publish --no-check-all --quiet "$COMPO
 	EOF
 }
 
+status "Install custom extensions"
+
+source $bp_dir/bin/grpc.sh
+source $bp_dir/bin/protobuf.sh
+
 status "Installing platform packages..."
 
 if [[ $STACK == "cedar-14" || $STACK == "heroku-16" ]]; then
@@ -560,11 +565,6 @@ else
 		EOF
 	fi
 fi
-
-status "Installing custom extensions"
-
-source $bp_dir/bin/grpc.sh
-source $bp_dir/bin/protobuf.sh
 
 status "Installing dependencies..."
 
